@@ -690,7 +690,7 @@ function setWin(dn){
   winAnim=requestAnimationFrame(step);
 }
 /* ---------- Datum-/Zeit-Simulation ---------- */
-var dragSim=false,simPend=0;
+var dragSim=false,simPend=0,simCen=0;  /* Mitte des Datumsreglers, Tage relativ zu heute */
 function wallToMs(y,mo,d,h,mi,tz){
   var g=Date.UTC(y,mo-1,d,h,mi,0),o=lp(g,tz).off;
   var r=g-o*60000,o2=lp(r,tz).off;
@@ -701,14 +701,14 @@ function syncSim(L){
   var rl=lp(Date.now(),cur.tz);
   el.simHeute.style.display=simOff?'':'none';
   if(dragSim)return;
-  el.dsl.value=Math.max(-366,Math.min(366,L.dn-rl.dn));
+  el.dsl.value=Math.max(-366,Math.min(366,L.dn-rl.dn-simCen));
   el.tsl.value=L.h*60+L.mi;
   el.dd.value=L.y+'-'+pad(L.mo)+'-'+pad(L.d);
-  el.dd.min=ymd(rl.dn-366);el.dd.max=ymd(rl.dn+366);
+  el.dd.min='1900-01-01';el.dd.max='2100-12-31';
 }
 function simInput(){
   dragSim=true;
-  var rl=lp(Date.now(),cur.tz),dn=rl.dn+(+el.dsl.value),dt=new Date(dn*86400000),m=+el.tsl.value;
+  var rl=lp(Date.now(),cur.tz),dn=rl.dn+simCen+(+el.dsl.value),dt=new Date(dn*86400000),m=+el.tsl.value;
   var t=wallToMs(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate(),Math.floor(m/60),m%60,cur.tz)+rl.s*1000+(Date.now()%1000);
   simOff=t-Date.now();if(Math.abs(simOff)<60000)simOff=0;
   tick();fastRecalc();
@@ -717,7 +717,8 @@ function ymd(dn){var d=new Date(dn*86400000);return d.getUTCFullYear()+'-'+pad(d
 function stepSim(dd,dm){
   var d=+el.dsl.value+dd,m=+el.tsl.value+dm;
   if(m<0){m+=1440;d--;}if(m>1439){m-=1440;d++;}
-  d=Math.max(-366,Math.min(366,d));el.dsl.value=d;el.tsl.value=m;simInput();
+  if(d>366||d<-366){simCen+=d;d=0;}
+  el.dsl.value=d;el.tsl.value=m;simInput();
 }
 function holdBtn(b,fn){
   var t1=0,t2=0;
@@ -726,7 +727,7 @@ function holdBtn(b,fn){
   ['pointerup','pointerleave','pointercancel'].forEach(function(n){b.addEventListener(n,function(){if(t1||t2)stop();});});
 }
 function simEnd(){dragSim=false;tick();}
-function simReset(){simOff=0;tick();recalc();}
+function simReset(){simOff=0;simCen=0;tick();recalc();}
 function buildSim(){
   el.dpill=E('g',{style:'cursor:pointer'});
   E('rect',{x:10,y:562,width:86,height:27,rx:13.5,fill:'#1d1a33',stroke:'#e9c98a','stroke-width':.8,opacity:.95},el.dpill);
@@ -739,7 +740,7 @@ function buildSim(){
   holdBtn($('btm'),function(){stepSim(0,-1);});holdBtn($('btp'),function(){stepSim(0,1);});
   el.dd.addEventListener('change',function(){var m=/^(\d+)-(\d+)-(\d+)$/.exec(el.dd.value);if(!m)return;
     var dn=Date.UTC(+m[1],+m[2]-1,+m[3])/86400000,rl=lp(Date.now(),cur.tz);
-    el.dsl.value=Math.max(-366,Math.min(366,dn-rl.dn));simInput();simEnd();});
+    simCen=dn-rl.dn;el.dsl.value=0;simInput();simEnd();});
   el.dpill.addEventListener('click',function(){el.dp.classList.toggle('on');});
   el.simHeute.addEventListener('click',simReset);
   [el.dsl,el.tsl].forEach(function(s){s.addEventListener('input',simInput);s.addEventListener('change',simEnd);s.addEventListener('pointerup',simEnd);s.addEventListener('touchend',simEnd);});
