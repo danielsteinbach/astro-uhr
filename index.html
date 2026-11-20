@@ -10,7 +10,11 @@ html,body{margin:0;height:100%;background:#07060f;color:#e8e2f0;overflow:hidden;
 #panel.on{display:flex}
 #dp{position:absolute;left:292px;top:566px;width:514px;height:76px;display:none;flex-direction:column;justify-content:space-around;box-sizing:border-box;padding:6px 18px;background:rgba(12,10,26,.38);border:1px solid rgba(233,201,138,.35);border-radius:14px;z-index:3}
 #dp.on{display:flex}
-#dp input{width:100%;height:26px;margin:0;accent-color:#e9c98a;opacity:.8;background:transparent}
+#dp input[type=range]{flex:1;min-width:0;height:26px;margin:0;accent-color:#e9c98a;opacity:.8;background:transparent}
+#dp .dr{display:flex;align-items:center;gap:6px}
+#dp .sb{width:30px;height:28px;flex:none;padding:0;border-radius:14px;border:1px solid rgba(233,201,138,.5);background:rgba(30,28,50,.7);color:#e9dfc8;font-size:22px;line-height:24px;cursor:pointer;touch-action:manipulation}
+#dp .cal{position:relative;width:30px;height:28px;flex:none;text-align:center;font-size:17px;line-height:28px;border:1px solid rgba(233,201,138,.5);border-radius:14px;background:rgba(30,28,50,.7);overflow:hidden}
+#dp .cal input{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer;color-scheme:dark}
 #ph{display:flex;align-items:center;justify-content:space-between;font-family:Caveat,cursive;font-size:22px;color:#f6eedb;margin-bottom:4px}
 #sq{display:none;flex:1;min-width:0;margin-right:8px;height:32px;box-sizing:border-box;background:#0a0916;color:#f6eedb;border:1px solid #e9c98a;border-radius:8px;font-size:16px;padding:0 10px;font-family:Roboto,Arial,sans-serif;outline:none}
 #panel.srch #sq{display:block}#panel.srch #pt{display:none}#panel.srch{top:36px;height:300px}
@@ -41,7 +45,7 @@ html,body{margin:0;height:100%;background:#07060f;color:#e8e2f0;overflow:hidden;
 <div id="panel"><div id="ph"><span id="pt" style="cursor:pointer;flex:1">Ort wählen <u style="text-decoration:none;font-size:18px;color:#e9c98a">&#9906;</u></span><input id="sq" type="text" placeholder="Stadt oder Land suchen" autocomplete="off" autocorrect="off" spellcheck="false"><button id="px">✕</button></div>
 <input type="range" id="sl" min="-180" max="180" step="0.1" value="16.18">
 <ul id="ls"></ul></div>
-<div id="dp"><input type="range" id="dsl" min="-366" max="366" step="1" value="0" title="Datum"><input type="range" id="tsl" min="0" max="1439" step="1" value="720" title="Uhrzeit"></div>
+<div id="dp"><div class="dr"><button class="sb" id="bdm" title="1 Tag zurück">‹</button><input type="range" id="dsl" min="-366" max="366" step="1" value="0" title="Datum"><button class="sb" id="bdp" title="1 Tag vor">›</button><span class="cal" title="Datum wählen">&#128197;<input type="date" id="dd"></span></div><div class="dr"><button class="sb" id="btm" title="1 Minute zurück">‹</button><input type="range" id="tsl" min="0" max="1439" step="1" value="720" title="Uhrzeit"><button class="sb" id="btp" title="1 Minute vor">›</button><span class="cal" style="visibility:hidden"></span></div></div>
 <button class="bt" id="bz">Zurück</button><button class="bt" id="bf" title="Vollbild" style="display:none"><svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:-2px"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" fill="none" stroke="#e9dfc8" stroke-width="1.6"/></svg></button><button class="bt" id="bi">i</button>
 </div>
 <div id="info"><div>
@@ -699,6 +703,8 @@ function syncSim(L){
   if(dragSim)return;
   el.dsl.value=Math.max(-366,Math.min(366,L.dn-rl.dn));
   el.tsl.value=L.h*60+L.mi;
+  el.dd.value=L.y+'-'+pad(L.mo)+'-'+pad(L.d);
+  el.dd.min=ymd(rl.dn-366);el.dd.max=ymd(rl.dn+366);
 }
 function simInput(){
   dragSim=true;
@@ -706,6 +712,18 @@ function simInput(){
   var t=wallToMs(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate(),Math.floor(m/60),m%60,cur.tz)+rl.s*1000+(Date.now()%1000);
   simOff=t-Date.now();if(Math.abs(simOff)<60000)simOff=0;
   tick();fastRecalc();
+}
+function ymd(dn){var d=new Date(dn*86400000);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate());}
+function stepSim(dd,dm){
+  var d=+el.dsl.value+dd,m=+el.tsl.value+dm;
+  if(m<0){m+=1440;d--;}if(m>1439){m-=1440;d++;}
+  d=Math.max(-366,Math.min(366,d));el.dsl.value=d;el.tsl.value=m;simInput();
+}
+function holdBtn(b,fn){
+  var t1=0,t2=0;
+  function stop(){clearTimeout(t1);clearInterval(t2);t1=t2=0;simEnd();}
+  b.addEventListener('pointerdown',function(e){e.preventDefault();fn();t1=setTimeout(function(){t2=setInterval(fn,90);},420);});
+  ['pointerup','pointerleave','pointercancel'].forEach(function(n){b.addEventListener(n,function(){if(t1||t2)stop();});});
 }
 function simEnd(){dragSim=false;tick();}
 function simReset(){simOff=0;tick();recalc();}
@@ -716,7 +734,12 @@ function buildSim(){
   el.simHeute=E('g',{style:'cursor:pointer;display:none'});
   E('rect',{x:104,y:562,width:70,height:27,rx:13.5,fill:'#1d1a33',stroke:'#e9c98a','stroke-width':.8,opacity:.95},el.simHeute);
   var t2=E('text',{x:139,y:581,'text-anchor':'middle','font-family':'Caveat','font-size':17.2,fill:'#e9dfc8'},el.simHeute);t2.textContent='Jetzt';
-  el.dsl=$('dsl');el.tsl=$('tsl');el.dp=$('dp');
+  el.dsl=$('dsl');el.tsl=$('tsl');el.dp=$('dp');el.dd=$('dd');
+  holdBtn($('bdm'),function(){stepSim(-1,0);});holdBtn($('bdp'),function(){stepSim(1,0);});
+  holdBtn($('btm'),function(){stepSim(0,-1);});holdBtn($('btp'),function(){stepSim(0,1);});
+  el.dd.addEventListener('change',function(){var m=/^(\d+)-(\d+)-(\d+)$/.exec(el.dd.value);if(!m)return;
+    var dn=Date.UTC(+m[1],+m[2]-1,+m[3])/86400000,rl=lp(Date.now(),cur.tz);
+    el.dsl.value=Math.max(-366,Math.min(366,dn-rl.dn));simInput();simEnd();});
   el.dpill.addEventListener('click',function(){el.dp.classList.toggle('on');});
   el.simHeute.addEventListener('click',simReset);
   [el.dsl,el.tsl].forEach(function(s){s.addEventListener('input',simInput);s.addEventListener('change',simEnd);s.addEventListener('pointerup',simEnd);s.addEventListener('touchend',simEnd);});
