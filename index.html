@@ -6,8 +6,11 @@
 html,body{margin:0;height:100%;background:#07060f;color:#e8e2f0;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;font-family:Roboto,"Helvetica Neue",Arial,sans-serif}
 #stage{position:absolute;left:0;top:0;width:1098px;height:654px;transform-origin:0 0;overflow:hidden}
 #sv{position:absolute;left:0;top:0;width:1098px;height:654px;touch-action:none}
-#panel{position:absolute;left:10px;top:150px;width:330px;height:440px;background:rgba(12,10,26,.97);border:1px solid rgba(233,201,138,.45);border-radius:14px;display:none;flex-direction:column;box-sizing:border-box;padding:10px 10px 10px;z-index:3}
+#panel{position:absolute;left:10px;top:150px;width:330px;height:400px;background:rgba(12,10,26,.97);border:1px solid rgba(233,201,138,.45);border-radius:14px;display:none;flex-direction:column;box-sizing:border-box;padding:10px 10px 10px;z-index:3}
 #panel.on{display:flex}
+#dp{position:absolute;left:292px;top:566px;width:514px;height:76px;display:none;flex-direction:column;justify-content:space-around;box-sizing:border-box;padding:6px 18px;background:rgba(12,10,26,.38);border:1px solid rgba(233,201,138,.35);border-radius:14px;z-index:3}
+#dp.on{display:flex}
+#dp input{width:100%;height:26px;margin:0;accent-color:#e9c98a;opacity:.8;background:transparent}
 #ph{display:flex;align-items:center;justify-content:space-between;font-family:Caveat,cursive;font-size:22px;color:#f6eedb;margin-bottom:4px}
 #sq{display:none;flex:1;min-width:0;margin-right:8px;height:32px;box-sizing:border-box;background:#0a0916;color:#f6eedb;border:1px solid #e9c98a;border-radius:8px;font-size:16px;padding:0 10px;font-family:Roboto,Arial,sans-serif;outline:none}
 #panel.srch #sq{display:block}#panel.srch #pt{display:none}#panel.srch{top:36px;height:300px}
@@ -28,7 +31,7 @@ html,body{margin:0;height:100%;background:#07060f;color:#e8e2f0;overflow:hidden;
 #info h3{margin:16px 0 2px;font-size:15px;color:#e9c98a}
 #info p{margin:0 0 6px;color:#cfc9de}#info{user-select:text;-webkit-user-select:text}#info p.u{font-size:13px;color:#9fb4ff;word-break:break-all;margin:0 0 6px}
 #info .bt{position:static;font-family:Roboto,Arial,sans-serif;font-size:16px;height:auto;padding:9px 14px;border-radius:10px}
-#hq{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(5,4,12,.9);z-index:20;display:none;align-items:center;justify-content:center}#hq div{max-width:420px;margin:16px;padding:22px;background:#12102a;border:1px solid rgba(233,201,138,.5);border-radius:14px;font-size:15px;line-height:1.5;color:#cfc9de}#hq h2{margin:0 0 8px;font-family:Caveat,cursive;font-size:28px;font-weight:400;color:#f6eedb}#hq button{display:block;width:100%;margin:8px 0 0;padding:11px;background:#1d1a33;color:#f6eedb;border:1px solid #e9c98a;border-radius:10px;font-size:16px;cursor:pointer;font-family:Roboto,Arial,sans-serif}#hm{min-height:20px;margin-top:8px;color:#e9c98a;font-size:14px}
+#hq{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(5,4,12,.9);z-index:20;display:none;align-items:flex-start;justify-content:center;overflow:auto}#hq div{max-width:420px;margin:24px 16px;padding:22px;background:#12102a;border:1px solid rgba(233,201,138,.5);border-radius:14px;font-size:15px;line-height:1.5;color:#cfc9de}#hq h2{margin:0 0 8px;font-family:Caveat,cursive;font-size:28px;font-weight:400;color:#f6eedb}#hq button{display:block;width:100%;margin:8px 0 0;padding:11px;background:#1d1a33;color:#f6eedb;border:1px solid #e9c98a;border-radius:10px;font-size:16px;cursor:pointer;font-family:Roboto,Arial,sans-serif}#hm{min-height:20px;margin-top:8px;color:#e9c98a;font-size:14px}
 #ld{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);color:#8d87a3;font-size:15px}
 </style></head><body>
 <div id="ld">lädt …</div>
@@ -38,6 +41,7 @@ html,body{margin:0;height:100%;background:#07060f;color:#e8e2f0;overflow:hidden;
 <div id="panel"><div id="ph"><span id="pt" style="cursor:pointer;flex:1">Ort wählen <u style="text-decoration:none;font-size:18px;color:#e9c98a">&#9906;</u></span><input id="sq" type="text" placeholder="Stadt oder Land suchen" autocomplete="off" autocorrect="off" spellcheck="false"><button id="px">✕</button></div>
 <input type="range" id="sl" min="-180" max="180" step="0.1" value="16.18">
 <ul id="ls"></ul></div>
+<div id="dp"><input type="range" id="dsl" min="-366" max="366" step="1" value="0" title="Datum"><input type="range" id="tsl" min="0" max="1439" step="1" value="720" title="Uhrzeit"></div>
 <button class="bt" id="bz">Zurück</button><button class="bt" id="bf" title="Vollbild" style="display:none"><svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:-2px"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" fill="none" stroke="#e9dfc8" stroke-width="1.6"/></svg></button><button class="bt" id="bi">i</button>
 </div>
 <div id="info"><div>
@@ -228,6 +232,7 @@ var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var NS='http://www.w3.org/2000/svg';
 var cur=HOME,curIdx=-1,tex={},dpr=window.devicePixelRatio||1,scale=1;
 var $=function(id){return document.getElementById(id);};
+var simOff=0;function NOW(){return Date.now()+simOff;}
 function pad(n){return (n<10?'0':'')+n;}
 function fnum(x,d){return x.toFixed(d).replace('.',',');}
 
@@ -424,7 +429,9 @@ function build(){
     else if(!big)E('line',{x1:(CX+304*Math.cos(tt)).toFixed(1),y1:(CY+304*Math.sin(tt)).toFixed(1),x2:(CX+315*Math.cos(tt)).toFixed(1),y2:(CY+315*Math.sin(tt)).toFixed(1),stroke:'#9d9ab6','stroke-width':1.6,'stroke-linecap':'round'});
   }
   TX(null,CX,CY-282,20.7,'#e9dfc8','middle','12');TX(null,CX+283,CY+5,20.7,'#e9dfc8','middle','3');TX(null,CX,CY+292,20.7,'#e9dfc8','middle','6');TX(null,CX-283,CY+5,20.7,'#e9dfc8','middle','9');
+  buildWindow();
   el.hh=dauph(190,26,22);el.mh=dauph(288,16,32);
+  E('use',{href:'#dwg',opacity:.42});
   E('circle',{cx:CX,cy:CY,r:84,fill:'url(#sun)',opacity:.55});
   E('circle',{cx:CX,cy:CY,r:29,fill:'#f2c23c'});E('circle',{cx:CX,cy:CY,r:29,fill:'url(#sun)',opacity:.8});
   E('circle',{cx:CX,cy:CY,r:20,fill:'#ffe9a0',filter:'url(#b3)',opacity:.85});
@@ -437,7 +444,7 @@ function build(){
   E('circle',{cx:123,cy:132,r:116,fill:'url(#hMb)'});
   el.moonBig=E('image',{x:23,y:32,width:200,height:200});
   TX('mt',123,270,23.5,'#f6eedb','middle');TX('mi',123,294,19.3,'#efe6d2','middle');TX('ma',123,316,19.3,'#efe6d2','middle');
-  TX('mf',123,346,18.6,'#e9dfc8','middle');TX('mn',123,368,18.6,'#e9dfc8','middle');
+  TX('mf',123,346,18.6,'#efe6d2','middle');TX('mn',123,368,18.6,'#efe6d2','middle');
   el.mrows=[];for(i=0;i<2;i++)el.mrows.push(row('moon',123,440+80*i));
   /* rechts: Erde */
   E('circle',{cx:975,cy:132,r:130,fill:'url(#hEb)'});
@@ -446,7 +453,7 @@ function build(){
   el.grid=E('g',{});
   el.sunm=E('circle',{cx:975,cy:132,r:4.6,fill:'#ffd24d',stroke:'#fff','stroke-width':1.4});
   el.cmark=E('circle',{r:2.1,fill:'#f4b59a',opacity:.95});
-  TX('et',975,270,23.5,'#f6eedb','middle');TX('ei',975,294,19.3,'#efe6d2','middle');TX('ew',975,324,19.3,'#e9dfc8','middle');
+  TX('et',975,270,23.5,'#f6eedb','middle');TX('ei',975,294,19.3,'#efe6d2','middle');TX('ew',975,324,19.3,'#efe6d2','middle');
   el.srows=[];for(i=0;i<3;i++)el.srows.push(row('sun',975,440+80*i));
   el.hit=E('circle',{cx:975,cy:132,r:104,fill:'transparent'});el.hit.style.cursor='grab';el.hit.style.touchAction='none';el.hit.style.pointerEvents='all';
   el.rsG=E('g',{style:'cursor:pointer;display:none'});
@@ -487,6 +494,7 @@ function build(){
   var ht=E('text',{x:294,y:617,'text-anchor':'middle','font-family':'Caveat','font-size':17.2,fill:'#e9dfc8'},el.homeG);ht.textContent='Nach Hause';
   TX('lt',123,646,15.5,'#8d8a96','middle');
   el.pill.addEventListener('click',togglePanel);el.homeG.addEventListener('click',function(){pick(-1);});
+  buildSim();
 }
 function row(kind,cx,y){
   var g=E('g',{}),ig=E('g',{},g);
@@ -521,8 +529,8 @@ function dayLen(c,mid){
   }
   return {sec:(set-rise)/1000,rise:rise,set:set};
 }
-function recalc(){
-  var now=Date.now(),c=cur,tz=c.tz,L=lp(now,tz),today=L.dn;
+function recalc(fast){
+  var now=NOW(),c=cur,tz=c.tz,L=lp(now,tz),today=L.dn;
   var sub=AC.subsolar(now),jd=AC.jdOf(now),sl=AC.sunEq(jd).lon,mph=AC.phase(now);
   /* Szene */
   var earthLon=(sl+180)%360,delta=-sl-90+sub.lam*R2D;
@@ -539,10 +547,11 @@ function recalc(){
   /* Monatsbeschriftung */
   for(var i=0;i<12;i++){var cu=i===L.mo-1;el.mon[i].setAttribute('fill',cu?'#fff':'#8d8a96');}
   /* Mond gross */
-  var Nm=Math.min(Math.max(Math.round(200*scale*dpr),128),512);
+  var Nm=Math.min(Math.max(Math.round(200*scale*dpr),128),512);if(fast)Nm=Math.min(Nm,150);
   var mv=AC.moonView(now,c.lat,c.lon),chr=mv.chi*D2R;
   el.moonBig.setAttribute('href',bakeMoon(Nm,180-Math.abs(mph.theta),-Math.sin(chr),-Math.cos(chr)));
   el.moonBig.setAttribute('transform','rotate('+mv.q.toFixed(1)+' 123 132)');
+  if(!fast){
   var ill=mph.illum,full=AC.nextPhase(now,true,1),newm=AC.nextPhase(now,false,1),pnew=AC.nextPhase(now,false,-1);
   var ttl=ill>.985?'Vollmond':ill<.015?'Neumond':(mph.theta>0?'Zunehmender Mond':'Abnehmender Mond');
   el.mt.textContent=ttl;el.mi.textContent=Math.round(ill*100)+' % beleuchtet';
@@ -554,9 +563,11 @@ function recalc(){
   for(j=0;j<me.length;j++){if(me[j].type==='rise'&&!mr)mr={t:me[j].t,name:'Mondaufgang',up:true};if(me[j].type==='set'&&!ms)ms={t:me[j].t,name:'Monduntergang',up:false};}
   var mevs=[mr,ms].filter(Boolean).sort(function(a,b){return a.t-b.t;});
   setRow(el.mrows[0],mevs[0],tz,now,today);setRow(el.mrows[1],mevs[1],tz,now,today);
+  }
   /* Erde gross */
   state.Ng=Math.min(Math.max(Math.round(200*scale*dpr),128),512);state.fr0=sunFrame(sub);state.sub=sub;
-  renderGlobe(false);
+  renderGlobe(!!fast);
+  if(!fast){
   /* Tageslaenge */
   var mid=now-((L.h*60+L.mi)*60+L.s)*1000-now%1000;
   var d0=dayLen(c,mid),d1=dayLen(c,mid+86400000);
@@ -576,10 +587,11 @@ function recalc(){
     if(e.type==='rise'&&!fr_)fr_={t:e.t,name:'Sonnenaufgang',up:true};}
   var sevs=tr_.concat([fs,fr_]).filter(Boolean).sort(function(a,b){return a.t-b.t;}).slice(0,3);
   for(j=0;j<3;j++)setRow(el.srows[j],sevs[j],tz,now,today);
+  }
   /* Beschriftung Ort */
   setPill(c);
   el.homeG.style.display=c.home?'none':'';
-  state.last=now;
+  if(!fast)state.last=now;
   tick();
 }
 function tapGlobe(cx,cy){
@@ -619,11 +631,95 @@ function drawGrid(fr,sub,c,low){
 }
 /* Zeiger jede Sekunde */
 function tick(){
-  var now=Date.now(),L=lp(now,cur.tz),mm=L.mi+L.s/60,hh=(L.h%12)+mm/60;
+  var now=NOW(),L=lp(now,cur.tz),mm=L.mi+L.s/60,hh=(L.h%12)+mm/60;
   function hand(e,ang,len,tail){var t=(ang-90)*D2R;e.setAttribute('x1',(CX-tail*Math.cos(t)).toFixed(1));e.setAttribute('y1',(CY-tail*Math.sin(t)).toFixed(1));e.setAttribute('x2',(CX+len*Math.cos(t)).toFixed(1));e.setAttribute('y2',(CY+len*Math.sin(t)).toFixed(1));}
   function dh(g,ang){g.setAttribute('transform','translate('+CX+' '+CY+') rotate('+(ang-90)+')');}
   dh(el.hh,hh*30);dh(el.mh,mm*6);hand(el.sh,L.s*6,300,40);
-  el.lt.textContent='Ortszeit '+WD[L.wd]+' '+L.d+'.'+L.mo+'. '+pad(L.h)+':'+pad(L.mi)+' · '+offTxt(L.off);
+  el.lt.textContent='Ortszeit '+WD[L.wd]+' '+L.d+'.'+L.mo+'.'+(simOff?L.y:'')+' '+pad(L.h)+':'+pad(L.mi)+' · '+offTxt(L.off);
+  setWin(L.dn);syncSim(L);
+}
+/* ---------- Datum-Fenster ---------- */
+var WDS=['SO','MO','DI','MI','DO','FR','SA'],winF=null,winT=null,winAnim=0;
+function dnWd(dn){return ((dn%7)+11)%7;}  /* dn=0 ist Do 1.1.1970 */
+function dnDay(dn){return new Date(dn*86400000).getUTCDate();}
+function buildWindow(){
+  var X=487,Y=390,Ww=124,Hh=40,m=X+Ww/2;
+  var defs=E('defs',{});
+  defs.innerHTML='<linearGradient id="dpl" x1="0" x2="1"><stop offset="0" stop-color="#9f9983"/><stop offset=".25" stop-color="#efe8d3"/><stop offset=".5" stop-color="#f6f0de"/><stop offset=".75" stop-color="#efe8d3"/><stop offset="1" stop-color="#9f9983"/></linearGradient>'+
+   '<linearGradient id="dpb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d5236"/><stop offset=".5" stop-color="#2a2418"/><stop offset="1" stop-color="#e9c98a"/></linearGradient>'+
+   '<linearGradient id="dps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".85"/><stop offset=".38" stop-color="#000" stop-opacity=".05"/><stop offset=".72" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient><linearGradient id="dpr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>'+
+   '<clipPath id="dpc"><rect x="'+X+'" y="'+Y+'" width="'+Ww+'" height="'+Hh+'" rx="4"/></clipPath>';
+  E('rect',{x:X-4,y:Y-4,width:Ww+8,height:Hh+8,rx:7,fill:'url(#dpb)'});
+  E('rect',{x:X,y:Y,width:Ww,height:Hh,rx:4,fill:'#0c0b14'});
+  var g=E('g',{id:'dwg','clip-path':'url(#dpc)'});
+  E('rect',{x:X,y:Y,width:Ww,height:Hh,fill:'url(#dpl)'},g);
+  el.dwG=E('g',{},g);el.ddG=E('g',{},g);
+  E('rect',{x:X,y:Y,width:Ww,height:Hh,fill:'url(#dps)'},g);E('rect',{x:X,y:Y,width:Ww,height:Hh,fill:'url(#dpr)'},g);
+  E('line',{x1:m,y1:Y,x2:m,y2:Y+Hh,stroke:'#3b3322','stroke-width':1.6},g);
+  E('rect',{x:X,y:Y,width:Ww,height:Hh,rx:4,fill:'none',stroke:'#000','stroke-opacity':.6,'stroke-width':1.5});
+  el.dwT=[];el.ddT=[];
+  for(var k=0;k<4;k++){
+    var a=E('text',{x:X+Ww/4,'text-anchor':'middle','font-family':'Caveat','font-size':32,'font-weight':700,fill:'#1c1a30'},el.dwG);
+    var b=E('text',{x:X+Ww*3/4,'text-anchor':'middle','font-family':'Caveat','font-size':32,'font-weight':700,fill:'#1c1a30'},el.ddG);
+    el.dwT.push(a);el.ddT.push(b);
+  }
+  winF=null;
+}
+function renderWin(f){
+  var Y=390,Hh=40,b=Math.floor(f),fr=f-b;
+  for(var k=0;k<4;k++){
+    var dn=b-1+k,y=Y+Hh/2+11+(k-1-fr)*Hh;
+    el.dwT[k].setAttribute('y',y.toFixed(1));el.ddT[k].setAttribute('y',y.toFixed(1));
+    el.dwT[k].textContent=WDS[dnWd(dn)];el.ddT[k].textContent=dnDay(dn);
+  }
+}
+function setWin(dn){
+  if(!el.dwT)return;
+  if(winF===null||Math.abs(dn-winF)>3){winF=dn;winT=dn;renderWin(dn);return;}
+  if(dn===winT)return;
+  winT=dn;if(winAnim)return;
+  var step=function(){
+    var d=winT-winF;
+    if(Math.abs(d)<.02){winF=winT;winAnim=0;renderWin(winF);return;}
+    winF+=d*.28;renderWin(winF);winAnim=requestAnimationFrame(step);
+  };
+  winAnim=requestAnimationFrame(step);
+}
+/* ---------- Datum-/Zeit-Simulation ---------- */
+var dragSim=false,simPend=0;
+function wallToMs(y,mo,d,h,mi,tz){
+  var g=Date.UTC(y,mo-1,d,h,mi,0),o=lp(g,tz).off;
+  var r=g-o*60000,o2=lp(r,tz).off;
+  return o2===o?r:g-o2*60000;
+}
+function syncSim(L){
+  if(!el.dsl)return;
+  var rl=lp(Date.now(),cur.tz);
+  el.simHeute.style.display=simOff?'':'none';
+  if(dragSim)return;
+  el.dsl.value=Math.max(-366,Math.min(366,L.dn-rl.dn));
+  el.tsl.value=L.h*60+L.mi;
+}
+function simInput(){
+  dragSim=true;
+  var rl=lp(Date.now(),cur.tz),dn=rl.dn+(+el.dsl.value),dt=new Date(dn*86400000),m=+el.tsl.value;
+  var t=wallToMs(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate(),Math.floor(m/60),m%60,cur.tz)+rl.s*1000+(Date.now()%1000);
+  simOff=t-Date.now();if(Math.abs(simOff)<60000)simOff=0;
+  tick();fastRecalc();
+}
+function simEnd(){dragSim=false;tick();}
+function simReset(){simOff=0;tick();recalc();}
+function buildSim(){
+  el.dpill=E('g',{style:'cursor:pointer'});
+  E('rect',{x:10,y:562,width:86,height:27,rx:13.5,fill:'#1d1a33',stroke:'#e9c98a','stroke-width':.8,opacity:.95},el.dpill);
+  var t=E('text',{x:53,y:581,'text-anchor':'middle','font-family':'Caveat','font-size':17.2,fill:'#e9dfc8'},el.dpill);t.textContent='Datum';
+  el.simHeute=E('g',{style:'cursor:pointer;display:none'});
+  E('rect',{x:104,y:562,width:70,height:27,rx:13.5,fill:'#1d1a33',stroke:'#e9c98a','stroke-width':.8,opacity:.95},el.simHeute);
+  var t2=E('text',{x:139,y:581,'text-anchor':'middle','font-family':'Caveat','font-size':17.2,fill:'#e9dfc8'},el.simHeute);t2.textContent='Jetzt';
+  el.dsl=$('dsl');el.tsl=$('tsl');el.dp=$('dp');
+  el.dpill.addEventListener('click',function(){el.dp.classList.toggle('on');});
+  el.simHeute.addEventListener('click',simReset);
+  [el.dsl,el.tsl].forEach(function(s){s.addEventListener('input',simInput);s.addEventListener('change',simEnd);s.addEventListener('pointerup',simEnd);s.addEventListener('touchend',simEnd);});
 }
 
 /* ---------- Ortswahl ---------- */
@@ -642,7 +738,11 @@ function nrm_(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f
 function filt(q){q=nrm_(q.trim());lis.forEach(function(l,i){var ok=!q||nrm_(CITIES[i][2]+' '+CITIES[i][3]).indexOf(q)>=0;l.style.display=ok?'':'none';});list.scrollTop=0;}
 function endSearch(){var sq=$('sq');if(!panel.classList.contains('srch'))return;sq.blur();sq.value='';filt('');panel.classList.remove('srch');if(curIdx>=0)lis[curIdx].scrollIntoView({block:'center'});}
 function togglePanel(){panel.classList.toggle('on');if(panel.classList.contains('on')&&curIdx>=0)lis[curIdx].scrollIntoView({block:'center'});}
-var pend=0;
+var pend=0,fbusy=0,fidle=0;
+function fastRecalc(){
+  if(!fbusy){fbusy=1;requestAnimationFrame(function(){fbusy=0;recalc(true);});}
+  clearTimeout(fidle);fidle=setTimeout(function(){recalc();},260);
+}
 function pick(i,fromSlider,keepRot){
   if(choosing&&i>=0){choosing=false;saveHome({lon:CITIES[i][0],lat:CITIES[i][1],name:CITIES[i][2],land:CITIES[i][3],tz:CITIES[i][4]});i=-1;}
   var c=i<0?HOME:{lon:CITIES[i][0],lat:CITIES[i][1],name:CITIES[i][2],land:CITIES[i][3],tz:CITIES[i][4],dip:0};
@@ -652,7 +752,7 @@ function pick(i,fromSlider,keepRot){
   if(!fromSlider)slider.value=c.lon;
   if(i>=0)lis[i].scrollIntoView({block:'nearest'});
   tick();setPill(c);el.homeG.style.display=c.home?'none':'';
-  clearTimeout(pend);pend=setTimeout(recalc,fromSlider?90:10);
+  if(fromSlider)fastRecalc();else{clearTimeout(pend);pend=setTimeout(recalc,10);}
 }
 
 /* ---------- Start ---------- */
@@ -666,12 +766,13 @@ function init(){
   var dd=window.__ASTRO_DATEN;
   var ff=new FontFace('Caveat','url('+dd.font+')');
   Promise.all([ff.load().then(function(f){document.fonts.add(f);}),decode(dd.earth).then(function(i){tex.earth=gradeEarth(i);}),decode(window.__ASTRO_NACHT.night).then(function(i){var n=i.width*i.height,o=new Uint8ClampedArray(n*3);for(var k=0;k<n;k++){o[k*3]=i.data[k*4];o[k*3+1]=i.data[k*4+1];o[k*3+2]=i.data[k*4+2];}tex.night={w:i.width,h:i.height,d:o};tex.coast=makeCoast(window.__ASTRO_NACHT.coast);}),decode(dd.moon).then(function(i){var n=i.width*i.height,g=new Uint8Array(n);for(var k=0;k<n;k++)g[k]=i.data[k*4];tex.moon={w:i.width,h:i.height,d:g};})]).then(function(){
-    fit();build();buildPanel();$('ld').style.display='none';recalc();askHome();
+    fit();build();buildPanel();$('ld').style.display='none';recalc();askHome();addReset();
     var t=function(){tick();setTimeout(t,1000-Date.now()%1000+5);};t();
     setInterval(function(){recalc();},120000);
   });
 }
 
+function addReset(){var li=document.createElement('li');li.style.cssText='color:#e9c98a;justify-content:center';li.innerHTML='<b>Meinen Standort neu festlegen</b>';li.addEventListener('click',function(){try{localStorage.removeItem('astroHome');}catch(e){}homeSaved=false;choosing=false;if(panel.classList.contains('on'))togglePanel();askHome();});list.insertBefore(li,list.firstChild);}
 function saveHome(o){HOME.lon=o.lon;HOME.lat=o.lat;HOME.name=o.name;HOME.land=o.land||'';HOME.tz=o.tz;HOME.dip=0;homeSaved=true;
   try{localStorage.setItem('astroHome',JSON.stringify({lon:o.lon,lat:o.lat,name:o.name,land:o.land||'',tz:o.tz}));}catch(e){}}
 function askHome(){
@@ -684,7 +785,12 @@ function askHome(){
       var tz='Europe/Vienna';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||tz;}catch(e){}
       saveHome({lon:pos.coords.longitude,lat:pos.coords.latitude,name:'Mein Standort',land:'',tz:tz});
       q.style.display='none';pick(-1);
-    },function(){m.textContent='Standort nicht verfügbar oder abgelehnt. Bitte Ort wählen.';},{timeout:15000,maximumAge:600000});
+    },function(er){var c=er&&er.code,sec=window.isSecureContext;
+      m.textContent=!sec?'Der Browser erlaubt die Standortabfrage nur bei Seiten mit https-Adresse, nicht bei einer lokal geöffneten Datei. Bitte Ort aus der Liste wählen oder die Seite über https://danielsteinbach.github.io/astro-uhr/ öffnen.'
+        :c===1?'Der Standort ist für diese Seite blockiert. Im Browser unter Website-Einstellungen Standort erlauben und die Seite neu laden, oder Ort aus der Liste wählen.'
+        :c===2?'Das Gerät liefert keinen Standort. Bitte die Ortung (GPS) des Geräts einschalten oder Ort aus der Liste wählen.'
+        :c===3?'Die Standortabfrage hat zu lange gedauert. Bitte erneut versuchen oder Ort aus der Liste wählen.'
+        :'Standort nicht verfügbar. Bitte Ort aus der Liste wählen.';},{timeout:20000,maximumAge:600000});
   };
   $('hl').onclick=function(){q.style.display='none';choosing=true;if(!panel.classList.contains('on'))togglePanel();};
   $('hw').onclick=function(){q.style.display='none';};
