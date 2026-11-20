@@ -1,0 +1,13 @@
+Astronomische Uhr - Quellen und Lizenzen (Stand 2026-11-20)
+
+Programmcode: gemeinfrei (CC0 1.0), Ersteller Daniel Steinbach. Fremdmaterial ist ausgenommen, es gelten die Bedingungen der Quellen (nicht kommerziell verwenden, sofern die Quelle nichts anderes ausdruecklich erlaubt).
+
+Erde: NASA Blue Marble Next Generation mit Topographie und Bathymetrie, Mai 2004 (world.topo.bathy.200405.3x5400x2700.jpg, auf 2048x1024 verkleinert). Reto Stoeckli, NASA Earth Observatory / NASA GSFC (Terra MODIS; Meerestiefen GEBCO). https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography-bathymetry/
+Mond: NASA Scientific Visualization Studio, CGI Moon Kit (SVS 4720), lroc_color_2k.jpg (LROC-WAC, Arizona State University, NASA/GSFC) und ldem_16_uint.tif (LOLA, NASA); auf Graustufen und 1024x512 verkleinert, Kraterschatten aus der Hoehenkarte neu berechnet. Nennung: NASA's Scientific Visualization Studio. https://svs.gsfc.nasa.gov/4720
+Nachtseite: NASA Black Marble 2016 (NASA Earth Observatory, Joshua Stevens; Daten Miguel Roman, NASA GSFC; Suomi NPP VIIRS), https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps
+NASA-Richtlinien: https://www.nasa.gov/nasa-brand-center/images-and-media/ (Bildung und Information mit Quellenangabe; kommerzielle Verwendung eingeschraenkt; keine Billigung durch die NASA vortaeuschen).
+Kuestenlinien: Natural Earth 1:110m coastline, public domain, naturalearthdata.com
+Orte, Koordinaten, Zeitzonen: GeoNames (CC BY 4.0), geonames.org, ueber das Python-Paket geonamescache
+Schrift: Caveat (SIL OFL 1.1), (c) 2014 The Caveat Project Authors, github.com/googlefonts/caveat
+Berechnung: Meeus, Astronomical Algorithms (gekuerzte Reihen), eigene Umsetzung
+Keine Verbindung zur NASA; Bearbeitung der Bilder nicht von der NASA geprueft.
